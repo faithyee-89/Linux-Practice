@@ -1,167 +1,353 @@
-typora-copy-images-to: ./media
+# Linux基本命令
 
-[toc]
+# 一、VMware的两种备份方式
 
-# Linux基础命令
+## 1、为什么要进行备份
 
-# 学习目标
+答：保证CentOS7.6操作系统的安全，必须对操作系统进行备份
 
-1、了解VMware备份的两种方式
+## 2、VMware有哪些系统备份方式
 
-2、能说出快照与克隆的区别
+① 快照备份
 
-3、了解Linux系统文件
+② 克隆备份
 
-4、掌握Linux基础命令
-
-5、知道vmware tools的作用
-
-# 一、备份操作系统
-
-在VMware中备份的方式有2 种：快照或克隆。
-
-## 1、快照
+## 3、快照备份
 
 快照：又称还原点，就是保存在拍快照时候的系统的状态（包含了所有的内容），在后期的时候随时可以恢复。
 
-> 注意：侧重在于短期备份，需要频繁备份的时候都可以使用快照，做快照的时候虚拟机中操作系统一般处于开启状态
+### ☆ 拍摄快照
 
-**快照：使用VMware实现快照，具体操作步骤，参考如下**
+第一步：启动Linux的操作系统（快照备份是在系统启动后进行操作的）
 
-第一步：选中要拍摄快照的虚拟机，选择"虚拟机"菜单，点选“快照”中的“拍摄快照”
+第二步：单击VMware菜单栏=>虚拟机=>快照=>选择拍摄快照
 
-<img src="media/kuaizhao01.jpg" style="width:960px" />
+![image-20200312095142481](media/image-20200312095142481.png)
 
+第三步：输出拍摄快照的名称（为什么要有名字？为了方便后期的恢复操作）
 
+![image-20200312095329467](media/image-20200312095329467.png)
 
-<img src="media/kuaizhao02.jpg" style="width:960px" />
+### ☆ 恢复快照
 
-在对话框中填写基本的信息，之后点击“拍摄快照”即可。
+第一步：模拟Linux操作系统故障（比如系统文件被删除、系统损坏等等）
 
-第二步：对于快照进行管理（恢复、删除）
+第二步：选择VMware菜单栏=>虚拟机=>快照=>恢复到快照（根据拍摄时的名称进行恢复）
 
-对快照的管理需要在"虚拟机" -> "快照" -> "快照管理器"中进行管理
+![image-20200312095800655](media/image-20200312095800655.png)
 
-<img src="media/kuaizhao03.jpg" style="width:960px" />
+### ☆ 总结
 
+注意：侧重在于短期备份，需要频繁备份的时候都可以使用快照，做快照的时候虚拟机中操作系统一般处于开启状态
 
-
-<img src="media/kuaizhao04.jpg" style="width:960px" />
-
-## 2、克隆
+## 4、克隆备份
 
 克隆：就是复制的意思。
 
-> 注意：克隆侧重长期备份，做克隆的时候是必须得关闭（了解）
+### ☆ 克隆备份
 
-**克隆：使用VMware实现克隆，具体操作步骤，参考如下**
+<font color="red">注意事项：克隆备份不同于快照备份，其要求克隆时，操作系统必须处于关闭状态。</font>
 
-先关机 –> 右键需要克隆的虚拟机 –> 管理 –> 克隆
+第一步：使用关机按钮或相关的关机命令对Linux进行关机操作
 
-<img src="media/image-20181226161728641-5812248.png" style="width:960px" />
+![image-20200312101948863](media/image-20200312101948863.png)
 
-<img src="media/image-20181226161747558-5812267.png" style="width:960px" />
+![image-20200312102058855](media/image-20200312102058855.png)
 
-<img src="media/image-20181226161802776-5812282.png" style="width:960px" />
+第二步：在要克隆的操作系统菜单上，鼠标右键，选择管理，选择克隆
 
-<img src="media/kelong01.jpg" style="width:960px" />
+![image-20200312102515483](media/image-20200312102515483.png)
 
-<img src="media/image-20181226162038913-5812438.png" style="width:960px" />
+第三步：根据向导进行克隆备份
 
-克隆好的服务器相关密码帐号等信息与被克隆的系统一致。但是，克隆出来的机器网卡不能直接启动使用，需要配置。
+下一步、下一步，选择克隆类型，一定要选择完整克隆
 
-## 3、快照与克隆的区别
+![image-20200312102710157](media/image-20200312102710157.png)
+
+设置克隆机的名称以及存储路径（此路径剩余可用空间必须>=10G）
+
+![image-20200312102854061](media/image-20200312102854061.png)
+
+克隆完成后，效果如下图所示：产生了一个全新的操作系统
+
+![image-20200312103003792](media/image-20200312103003792.png)
+
+### ☆ 总结
+
+克隆侧重长期备份，做克隆的时候是必须得关闭操作系统（了解）
+
+应用场景：快速创建多台计算机
+
+## 5、快照与克隆的区别
 
 克隆与快照的最大的区别：==克隆之后是2 台机器，而快照之后依旧是1 台机器（类似windows的还原点）。后期的危险操作前建议使用快照。==
-
-
 
 # 二、Linux系统使用注意
 
 ## 1、Linux严格区分大小写
 
-         Linux 和Windows不同，Linux严格区分大小写的，包括文件名和目录名、命令、命令选项、配置文件设置选项等。
-         例如，Win7 系统桌面上有文件夹叫做Test，当我们在桌面上再新建一个名为 test 的文件夹时，系统会提示文件夹命名冲突；
+```powershell
+Linux 和Windows不同，Linux严格区分大小写的，包括文件名和目录名、命令、命令选项、配置文件设置选项等。
 
-<img src="media/zhuyi01.jpg" style="width:960px" />
+例如，Win7 系统桌面上有文件夹叫做Test，当我们在桌面上再新建一个名为 test 的文件夹时，系统会提示文件夹命名冲突；
+```
 
+Windows演示：
 
+![image-20200312104935449](media/image-20200312104935449.png)
 
-<img src="media/zhuyi02.jpg" style="width:960px" />
+Linux演示：
 
-​        Linux 系统不会，Linux 系统认为 Test ==文件==和 test ==文件==不是同一个==文件==，因此在 Linux 系统中，Test ==文件==和 test ==文件==可以位于同一目录下。
+![image-20200312105002814](media/image-20200312105002814.png)
 
-​        ==我们在操作 Linux 系统时要注意区分大小写的不同。==
+由以上图解可知：Linux是一个非常严谨的操作系统，严格区分大小写。
 
 ## 2、Linux文件"扩展名"
 
-​        我们都知道，Windows 是依赖扩展名区分文件类型的，比如，".txt" 是文本文件、".exe" 是执行文件，但 Linux 不是。
-​        Linux 系统通过==权限位标识==来确定文件类型，常见的文件类型有普通文件、目录、链接文件、块设备文件、字符设备文件等几种。Linux 的可执行文件就是普通文件被赋予了可执行权限。
+> 在Linux操作系统中，与Windows不同，其文件的类型不是通过扩展名来进行区分的！
 
-<img src="media/zhuyi03.jpg" style="width:960px" />
+我们都知道，Windows 是依赖扩展名区分文件类型的，比如，".txt" 是文本文件、".exe" 是执行文件，但 Linux 不是。
 
-<img src="media/zhuyi04.jpg" style="width:960px" />
+ Linux 系统通过==权限位标识==来确定文件类型，常见的文件类型有普通文件、目录、链接文件、块设备文件、字符设备文件等几种。Linux 的可执行文件就是普通文件被赋予了可执行权限。
 
-​        Linux 中的一些特殊文件还是要求写 "扩展名" 的，但 Linux 不依赖扩展名来识别文件类型，写这些扩展名是为了帮助运维人员来区分不同的文件类型。
-​        这样的文件扩展名主要有以下几种：
-​        **压缩包**：Linux 下常见的压缩文件名有 *.gz、*.bz2、*.zip、*.tar.gz、*.tar.bz2、*.tgz 等。
-​        为什么压缩包一定要写扩展名呢？很简单，如果不写清楚扩展名，那么管理员不容易判断压缩包的格式，虽然有命令可以帮助判断，但是直观一点更加方便。就算没写扩展名，在 Linux 中一样可以解压缩，不影响使用。
-​        **二进制软件包**：CentOS 中所使用的二进制安装包是 RPM 包，所有的 RPM 包都用".rpm"扩展名结尾，目的同样是让管理员一目了然。
-​       **程序文件**：Shell 脚本一般用 ".sh" 扩展名结尾。
-​       **网页文件**：网页文件一般使用 ".php" 等结尾，不过这是网页服务器的要求，而不是 Linux 的要求。
+![image-20200312105800243](media/image-20200312105800243.png)
 
+Linux系统中常见的后缀名称：
 
+```powershell
+Linux 中的一些特殊文件还是要求写 "扩展名" 的，但 Linux 不依赖扩展名来识别文件类型，写这些扩展名是为了帮助运维人员来区分不同的文件类型。
+
+这样的文件扩展名主要有以下几种：
+压缩包：Linux 下常见的压缩文件名有 *.gz、*.bz2、*.zip、*.tar.gz、*.tar.bz2、*.tgz 等。
+
+为什么压缩包一定要写扩展名呢？很简单，如果不写清楚扩展名，那么管理员不容易判断压缩包的格式，虽然有命令可以帮助判断，但是直观一点更加方便。就算没写扩展名，在 Linux 中一样可以解压缩，不影响使用。
+
+二进制软件包：CentOS 中所使用的二进制安装包是 RPM 包，所有的 RPM 包都用".rpm"扩展名结尾，目的同样是让管理员一目了然。=> 类似Windows中的exe文件
+
+程序文件：Shell 脚本一般用 ".sh" 扩展名结尾。=> check_network.sh
+
+网页文件：网页文件一般使用 ".php" 等结尾，不过这是网页服务器的要求，而不是 Linux 的要求。
+.html/.css/.js/.jsp/.php/.py => 网页文件
+```
+> ① Linux操作系统不以“扩展名”来判断文件的类型，而是通过权限位标识符来进行判断
+
+> ② 有一些特殊的文件，有扩展名称=>压缩包、二进制软件包、程序文件、网页文件
 
 ## 3、Linux中所有内容以文件形式保存
 
-**Linux中，一切皆文件**
+在Linux系统中，一切皆文件！
 
-​       
+> 在Windows是文件的，在Linux下也是文件。在Windows中不是文件的，在Linux系统中也是文件。
 
-**普通文件**，类似于windows中文件的概念，可以分为一般文件（黑色）和可执行文件（绿色）。
+问题：我们目前还没有学习权限标识符，怎么判断文件的类型呢？
 
-一般文件特点其打开（编辑器打开）后会看到里面有内容，或者可以往其中写内容。(黑色的)
+答：可以通过文件的颜色
 
-可执行文件在Windows 下一般为exe、msi、bat 等后缀，其特点就是双击之后可以直接运行。（绿色的）
+![image-20200312113307247](media/image-20200312113307247.png)
 
-<img src="media/zhuyi05.jpg" style="width:960px" />
+然后使用ls命令，查看文件的颜色
 
-<img src="media/zhuyi06.jpg" style="width:960px" />
+```powershell
+# ls
+l : L的小写形式
+```
 
-**目录文件**类似于Windows中的文件夹
+普通文件：通过ls命令查看时，如果显示<font color="red">黑色</font>，代表其是一个普通的文件
 
-用于存储文件（当然也可以存储文件夹）的夹子称之为文件夹。（天蓝色的）
+文件夹：通过ls命令查看时，如果显示<font color="red">天蓝色</font>，代表是一个文件夹
 
-<img src="media/zhuyi07.jpg" style="width:960px" />
+## 4、Linux中存储设备都必须在挂载之后才能使用
+
+![image-20200312114423821](media/image-20200312114423821.png)
+
+Windows：分区+格式化
+
+Linux操作系统：分区+格式化+挂载，存储设备必须挂载后才能使用（硬盘、光盘、U盘）
+
+> mount命令： mount   空格   /dev/sda1  空格  /mnt/file
+
+# 三、Linux系统的目录结构（重要）
+
+## 1、Linux分区与Windows分区
+
+Linux 系统不同于 Windows，没有 C 盘、D 盘、E 盘那么多的盘符，只有一个==根目录（/）==，所有的文件（资源）都存储在以==根目录（/）==为树根的==树形==目录结构中。
+
+Windows：
+
+![image-20200312115814989](media/image-20200312115814989.png)
+
+Linux：
+
+![image-20200312115750006](media/image-20200312115750006.png)
+
+## 2、Linux系统文件架构
+
+![image-20200312115851811](media/image-20200312115851811.png)
+
+ 在 Linux 根目录（/）下包含很多的子目录，称为一级目录。
+例如 bin、boot、dev 等。
+
+同时，各一级目录下还含有很多子目录，称为二级目录。
+例如 /bin/bash、/bin/ed 等。
+
+## 3、Linux系统的文件目录用途
+
+/bin：系统命令目录
+
+/sbin：超级命令目录，只能超级管理员可以执行的命令
+
+/boot：系统目录，类似于Windows中的C盘
+
+/dev ：设备文件目录，硬盘、光驱、U盘都属于设备文件，/dev/sr0代表光驱设备。注意，次目录下的文件没有办法直接使用，必须先挂载
+
+/etc ：非常重要，代表系统的配置文件目录。大部分软件安装完成后，其配置文件都存放在此目录
+
+/home：普通用户的家目录，用户登录后会自动切换到此目录
+
+/root：超级管理员的家目录，超级管理员登录后会自动切换到此目录
+
+/media：挂载目录，早期Linux挂载目录，用于挂载光盘以及软盘
+
+/mnt：挂载目录，用来挂载额外的设备，如 U 盘、移动硬盘和其他操作系统的分区
+
+/opt ：第三方软件目录，这个目录是放置和安装其他软件的位置，手工安装的源码包软件都可以安装到这个目录中。不过笔者还是习惯把软件放到 /usr/local/ 目录中，也就是说，/usr/local/ 目录也可以用来安装软件
+
+/usr ：系统程序目录，类似Windows中的Program Files
+
+/proc：虚拟文件系统。该目录中的数据并不保存在硬盘上，而是保存到内存中。主要保存系统的内核、进程、外部设备状态和网络状态等。
+
+/tmp ：临时文件目录，在该目录下，所有用户都可以访问和写入。建议此目录中不能保存重要数据，最好每次开机都把该目录清理
+
+/var ：经常变化的文件目录，网页文件、数据文件、日志文件
+
+# 四、Linux入门级命令
+
+## 1、开启终端
+
+问题：什么是终端（Terminal）
+
+答：Linux操作系统中用于输入命令的地方
+
+![image-20200312145513405](media/image-20200312145513405.png)
+
+打开后，效果如下图所示：
+
+![image-20200312145943049](media/image-20200312145943049.png)
+
+## 2、Linux命令格式
+
+什么是Linux 的命令？
+
+答：就是指在Linux 终端（命令行）中输入的内容就称之为命令。
+
+一个完整的命令的标准格式：Linux 通用的格式
+
+```powershell
+# 命令（空格） [选项]（空格）[参数]
+```
+
+但是有些命令比较特殊，可能没有选项也没有参数
+
+```powershell
+# pwd
+```
+
+还有一些命令，有命令有选项，但是没有参数
+
+```powershell
+# ls -l
+```
+
+还有一些命令，命令+选项+参数全都有
+
+```powershell
+# tail -n 3 readme.txt
+```
+
+## 3、扩展：Linux下的命令补全
+
+键盘上有一个按键：Tab键
+
+![image-20200312151903965](media/image-20200312151903965.png)
+
+当我们在Linux系统的终端中，输入命令时，可以无需完整的命令，只需要记住命令的前几个字母即可，然后按Tab键，系统会自动进行补全操作。
+
+```powershell
+# syst + Tab键
+# systemc + Tab键
+# systemctl
+```
+
+有些命令可能都以某几个字母开头，这个时候，只需要按两次Tab键，其就会显示所有命令。
+
+```powershell
+# clea + Tab键 + Tab键
+```
+
+> Tab键的功能特别强大：其不仅可以补全命令还可以补全Linux的文件路径
+
+## 4、切换用户
+
+基本语法：
+
+```powershell
+# su - root
+Password:123456
+[root@localhost ~]# 切换成功
+```
+
+> 扩展：-横杠作用是什么？答：-横杠代表切换用户的同时，切换用户的家目录
+
+## 5、uname命令
+
+主要功能：获取计算机操作系统相关信息
+
+基本语法：
+
+```powershell
+# uname -a
+选项说明：
+-a ：all缩写，代表显示所有信息，获取全部的系统信息（类型、全部主机名、内核版本、发布时间、开源计划）
+```
+
+## 6、ls命令
+
+### ☆ 用法一
+
+主要功能：ls完整写法list show，以平铺的形式显示当前目录下的文件信息
+
+基本语法：
+
+```powershell
+# ls
+```
+
+### ☆ 用法二
+
+主要功能：显示其他目录下的文件信息
+
+```powershell
+# ls 其他目录的绝对路径或相对路径
+```
+
+> 扩展：ls后面跟的路径既可以是绝对路径也可以是相对路径
+
+**绝对路径**：不管当前工作路径是在哪，==目标路径都会从“/”磁盘根下开始==。
+案例：访问itheima用户的家目录，查看有哪些文件
+
+```powershell
+# ls /home/itheima
+```
+
+<font color="red">绝对路径必须以左斜杠开头，一级一级向下访问，不能越级</font>
 
 
 
-## 4、Linux中所有存储设备都必须在挂载之后才能使用
-
-​        **挂载**其实就是给这些存储设备==分配盘符==，只不过 Windows 中的盘符用英文字母表示，例如c:,d:,而 Linux 中的盘符则是一个已经建立的空目录。我们把这些空目录叫作**挂载点**（可以理解为 Windows 的盘符），把==设备文件（如 /dev/sdb）和挂载点（已经建立的空目录）连接的过程叫作挂载==。
-
-​        ==挂载==过程是通过挂载命令实现的，具体的挂载命令后续会讲。
-
-## 5、Linux系统的文件目录结构
-
-​        Linux 系统不同于 Windows，没有 C 盘、D 盘、E 盘那么多的盘符，只有一个==根目录（/）==，所有的文件（资源）都存储在以==根目录（/）==为树根的==树形==目录结构中。
-
-​        <img src="media/mulu01.jpg" style="width:960px" />
-
-​        在 Linux 根目录（/）下包含很多的子目录，称为一级目录。
-​        例如 bin、boot、dev 等。
-​        同时，各一级目录下还含有很多子目录，称为二级目录。
-​        例如 /bin/bash、/bin/ed 等。
-
-
-
-<img src="media/mulu02.jpg" style="width:960px" />
-
-路径**：路径分为 绝对路径和相对路径。
-**==绝对路径==**：不管当前工作路径是在哪，==目标路径都会从“/”磁盘根下开始==。
 **相对路径**：除绝对路径之外的路径称之为相对路径，相对路径得有一个相对物（当前工作路径）。
 
 只要看到路径以“/”开头则表示该路径是绝对路径，除了以“/”开头的路径称之为相对路径。
+
+当前位置：/home/itheima目录下
 
 ../：表示上级目录（上一级）
 
@@ -169,668 +355,217 @@ typora-copy-images-to: ./media
 
 文件夹名称/：表示下级目录（下一级），注意这个斜杠/
 
-## 6、Linux系统的文件目录用途
+### ☆ 用法三
 
-​           Linux 基金会发布了 FHS （Filesystem Hierarchy Standard 文件系统层次化标准）。规定了主要文件夹的用途
-
-<img src="media\ml01.jpg" style="width:960px" />
-
-
-
-
-| 一级目录 | 功能（作用）                                                 |
-| -------- | ------------------------------------------------------------ |
-| /bin/    | 存放系统命令，普通用户和 root 都可以执行。放在 /bin 下的命令在单用户模式下也可以执行 |
-| /boot/   | 系统启动目录，保存与系统启动相关的文件，如内核文件和启动引导程序（grub）文件等 |
-| /dev/    | 设备文件保存位置                                             |
-| /etc/    | 配置文件保存位置。系统内所有采用默认安装方式（rpm 安装）的服务配置文件全部保存在此目录中，如用户信息、服务的启动脚本、常用服务的配置文件等 |
-| /home/   | 普通用户的主目录（也称为家目录）。在创建用户时，每个用户要有一个默认登录和保存自己数据的位置，就是用户的主目录，所有普通用户的主目录是在 /home/ 下建立一个和用户名相同的目录。如用户 liming 的主目录就是 /home/liming |
-| /lib/    | 系统调用的函数库保存位置                                     |
-| /media/  | 挂载目录。系统建议用来挂载媒体设备，如软盘和光盘             |
-| /mnt/    | 挂载目录。早期 Linux 中只有这一个挂载目录，并没有细分。系统建议这个目录用来挂载额外的设备，如 U 盘、移动硬盘和其他操作系统的分区 |
-| /misc/   | 挂载目录。系统建议用来挂载 NFS 服务的共享目录。虽然系统准备了三个默认挂载目录 /media/、/mnt/、/misc/，但是到底在哪个目录中挂载什么设备可以由管理员自己决定。例如，笔者在接触 Linux 的时候，默认挂载目录只有 /mnt/，所以养成了在 /mnt/ 下建立不同目录挂载不同设备的习惯，如 /mnt/cdrom/ 挂载光盘、/mnt/usb/ 挂载 U 盘，都是可以的 |
-| /opt/    | 第三方安装的软件保存位置。这个目录是放置和安装其他软件的位置，手工安装的源码包软件都可以安装到这个目录中。不过笔者还是习惯把软件放到 /usr/local/ 目录中，也就是说，/usr/local/ 目录也可以用来安装软件 |
-| /root/   | root 的主目录。普通用户主目录在 /home/ 下，root 主目录直接在“/”下 |
-| /sbin/   | 保存与系统环境设置相关的命令，只有 root 可以使用这些命令进行系统环境设置，但也有些命令可以允许普通用户查看 |
-| /srv/    | 服务数据目录。一些系统服务启动之后，可以在这个目录中保存所需要的数据 |
-| /tmp/    | 临时目录。系统存放临时文件的目录，在该目录下，所有用户都可以访问和写入。建议此目录中不能保存重要数据，最好每次开机都把该目录清理 |
-
-
-
-​        FHS 针对根目录中包含的子目录仅限于上表，但除此之外，Linux 系统根目录下通常还包含下面几个一级目录。
-
-| 一级目录     | 功能（作用）                                                 |
-| ------------ | ------------------------------------------------------------ |
-| /lost+found/ | 当系统意外崩溃或意外关机时，产生的一些文件碎片会存放在这里。在系统启动的过程中，fsck 工具会检查这里，并修复已经损坏的文件系统。这个目录只在每个分区中出现，例如，/lost+found 就是根分区的备份恢复目录，/boot/lost+found 就是 /boot 分区的备份恢复目录 |
-| /proc/       | 虚拟文件系统。该目录中的数据并不保存在硬盘上，而是保存到内存中。主要保存系统的内核、进程、外部设备状态和网络状态等。如 /proc/cpuinfo 是保存 CPU 信息的，/proc/devices 是保存设备驱动的列表的，/proc/filesystems 是保存文件系统列表的，/proc/net 是保存网络协议信息的...... |
-| /sys/        | 虚拟文件系统。和 /proc/ 目录相似，该目录中的数据都保存在内存中，主要保存与内核相关的信息 |
-
-# 三、Linux命令入门
-
-## 1、开启终端
-
-问题：后期Linux 服务器都是以纯命令行的形式运行的，那在桌面模式下是否有命令输入的地方？
-
-答：有，可以使用==终端==输入命令，在顶部单击应用程序菜单，选择系统工具，选择终端即可。
-
-<img src="media\ml02.jpg" style="width:960px" />
-
-
-
-运行结果如下图所示：
-
-<img src="media\ml03.jpg" style="width:960px" />
-
-## 2、命令与选项
-
-什么是Linux 的命令？
-
-答：就是指在Linux 终端（命令行）中输入的内容就称之为命令。
-
-<img src="media\ml04.jpg" style="width:960px" />
-
-一个完整的命令的标准格式：Linux 通用的格式
-
-#命令（空格） [选项]（空格）[参数]
-
-```powershell
-#ls
-
-#ls -l
-
-#tail -n 3 readme.txt
-```
-
-注意：后期被"[]"包裹的表示该项为可选项，可写可不写，具体得看需要一个命令可以包含多个选项。操作对象也可以是多个。
-
-## 3、Linux命令补全
-
-​        在 Linux 系统中，当你输入一个命令，再按两次 TAB 键，就会列出所有以你输入字符开头的可用命令。这个功能被称作命令行补全。
-
-<img src="media\cd02.jpg" style="width:960px" />
-
-
-
-# 四、Linux基础命令
-
-以下相关命令操作，建议使用超级管理员root进行实现，使用root用户登录linux
-
-```powershell
-#su - root
-```
-
-## 1、uname查看操作系统信息
-
-命令：uname [参数]
-
-作用：获取计算机操作系统相关信息
-
-参数：-a，选项-a代表all，表示获取全部的系统信息（类型、全部主机名、内核版本、发布时间、开源计划）
-
-```powershell
-用法一：直接输入uname 或者 uname -a
-示例代码：
-#uname
-#uname -a
-含义：获取操作系统的信息
-```
-
-<img src="media\uname02.jpg" style="width:960px" />
-
-
-
-## 2、ls命令查看目录下文件
-
-ls（完整写法=>list show）列出,列表
-
-```powershell
-用法一：直接输入ls
-示例代码：
-#ls
-含义：列出当前工作路径下的文件名称
-```
-
-示例代码：
-
-<img src="media\ml04.jpg" style="width:960px" />
-
-```powershell
-用法二：# ls 后面跟绝对路径，列出某个路径下的文件名
-示例代码：
-#ls /var/log/
-含义：列出/var/log/目录下的文件名称
-
-```
-
-<img src="media\ls07.jpg" style="width:960px" />
-
-```powershell
-用法三：# ls 后面跟相对路径，列出某个路径下的文件名
-示例代码：
-#ls anaconda/
-含义:列出当前工作路径下，anaconda目录下的文件名
-```
-
-<img src="media\ls08.jpg" style="width:960px" />
-
-
-
-```powershell
-用法四：#ls 后面跟参数选项 跟路径
-含义：在列出指定路径下的文件/文件夹的名称，并以指定的格式进行显示。
-
-常见的参数选项：
--l：表示list，表示以详细列表的形式进行展示
--a：all，表示显示所有的文件/文件夹（包含了隐藏文件/文件夹）
--h：表示以较高可读性（文档大小）的形式进行展示
-
-示例代码：
-#ls -l
-
-#ls -a
-
-#ls -la
-
-#ls -lh
-在Linux 命令语法中，多个选项可以合并写成-abcdef 这种形式,例如-l和-a可以合并写成-la
-```
-
-<img src="media\ls03.jpg" style="width:960px" />
-
-
-
-<img src="media\ls09.jpg" style="width:960px" />
-
-
-
-<img src="media\ls04.jpg" style="width:960px" />
-
-特别说明：
-
-```powershell
-在Linux 中隐藏文档一般都是以"."开头
-    "."表示当前路径
-    ".."表示上级路径（相对当前路径）
-
-注意第一列的第一个字符，该位表示文档类型，“d”表示文件夹，“-”表示是文件
-
-文件&文件夹在ls结果中所表示的颜色是不一样的，文件夹的颜色一般都是蓝色的，文件一般都是黑色的（所说的颜色均是指在终端中的默认颜色）
-```
-
-<img src="media\ls06.jpg" style="width:960px" />
-
-​        需要注意：单位不一定是k，系统会在获取其大小之后为文档找到一个合适的单位，因此单位可是“K”、“M”、“G”、“T”其中之一。
-
-
-
-
-
-```powershell
-用法五：将ls -l进行简写
-示例代码：
-#ll
-
-ll等价于"ls -l"
-```
-
-<img src="media\ls05.jpg" style="width:960px" />
-
-
-
-LS命令总结：
-
-```powershell
-#ls    查看当前目录下的文件  
-
-#ls /usr/local    查看指定路径下的文件，路径为/usr/local
-
-#ls -l /usr/local    以详细信息的方式查看/usr/local下的文件
-
-#ls -la /usr/local      以详细信息的方式，查看/usr/local下的所有文件，包含隐藏文件
-
-#ll    ls -l
-
-#ls -lh  高可读性方式查看
-```
-
-​    
-
-
-
-
-
-## 3、pwd命令 显示当前路径
-
-命令：（print working directory)打印当前工作目录
-
-```powershell
-用法：直接输入pwd
-示例代码：
-#pwd
-含义：告诉用户当前所在的路径
-```
-
-<img src="media\pwd01.jpg" style="width:960px" />
-
-
-
-## 4、cd命令 切换目录
-
-命令： cd （==change directory==，改变目录）
-
-作用：用于切换当前的工作目录的
-
-```powershell
-用法：#cd [路径]
-示例代码：
-
-#cd /usr/local/
-含义：切换到/usr/local/目录下
-
-#cd
-含义：切换到当前用户的家目录
-
-#cd ~
-含义：切换到当前用户的家目录
-
-#cd ../
-含义：切换到上一级目录
-
-```
-
-说明：路径是可以写也可以不写，写路径的话则表示切换到指定路径，如果不写表示切换到当前登录用户的家目录中。
-
-
-
-<img src="media/cd01.jpg" style="width:960px" />
-
-特别用法说明：在Linux 中有一个特殊的符号“~”，表示当前用户的家目录，等价于直接cd。
-
-切换的方式：# cd ~ 【表示切换到当前用户家目录中】
-
-
-
-<img src="media/image-20181226173356033-5816836.png" style="width:960px" />
-
-
-
-
-
-## 5、clear命令 清除屏幕信息
-
-命令： clear
-
-作用：用于清除终端信息（清屏）
-
-```powershell
-用法：直接输入clear回车
-示例代码：
-#clear
-含义：清除屏幕信息
-```
-
-<img src="media/image-20181226174024785-5817224.png" style="width:960px" />
-
-## 6、whoami命令 显示当前用户
-
-命令： whoami
-
-作用：用户获取当前用户的用户名
-
-```powershell
-用法：直接输入whoami回车
-示例代码：
-#whoami
-含义：获取当前用户的用户名
-```
-
-
-
-<img src="media/image-20181226174434122-5817474.png" style="width:960px" />
-
-
-
-## 7、reboot命令 重启操作系统
-
-命令： reboot
-
-作用：重启操作系统
-
-```powershell
-用法：输入reboot回车
-示例代码：
-#reboot
-含义：重启操作系统
-```
-
-<img src="media/image-20181226174919873-5817759.png" style="width:960px" />
-
-##  8、shutdown命令 关闭操作系统
-
-命令： shutdown
-
-作用：关机命令
-
-```powershell
-用法一：输入shutdown回车
-示例代码：
-#shutdown
-含义：使系统在60秒后关机
-
-```
-
-<img src="media\shutdown01.jpg" style="width:960px" />
-
-
-
-```powershell
-用法二：输入shutdown加参数
--h 加数字：数字代表秒数，在某个时间后关机，如果数字为0，表示立即关机
-now：表示立即关机
-
-示例代码：
-#shutdown -h 20
-含义：延迟关机，使系统在20分后关机
-说明：当我们执行延迟关机shutdown  -h  20这个命令时，系统就处于关机等待状态。如果后悔了想取消关机，可以输入shutdown -c取消
-
-示例代码：
-#shutdown now
-含义：立即关机
-```
-
-<img src="media/shutdown03.jpg" style="width:960px" />
-
-
-
-```powershell
-用法三：shutdown加-r参数重启计算机
-
-示例代码：
-#shutdown -r 60			
-含义：延迟重启，60分之后重启
-
-#shutdown -r now
-含义：立即重启
-
-说明：重启等待期间，仍然可以使用shutdown -c取消操作
-```
-
-<img src="media\shutdown02.jpg" style="width:960px" />
-
-
-
-扩展命令：halt命令
-
-```powershell
-在实际应用中，我们也可以直接使用halt命令进行关机操作。
 基本语法：
-# halt -p
-以上命令相当于"shutdown  -h   0"，代表立即关机
-```
-
-
-
-shutdown命令总结
 
 ```powershell
-#shutdown now   立即关机
-
-#shutdown -h 0   立即关机
-
-#shutdown -h 60    延时关机，60分钟
-
-#延时50秒关机 用什么命令？
-
-#shutdown -r 0     立即重启
-
-#shutdown -r 60    延时重启
+# ls [选项] [路径]
+选项说明：
+-l ：ls -l，代表以详细列表的形式显示当前或其他目录下的文件信息(简写命令=>ll)
+-h ：ls -lh，通常与-l结合一起使用，代表以较高的可读性显示文件的大小(kb/mb/gb)
+-a ：ls -a，a是all缩写，代表显示所有文件（也包含隐藏文件=>大部分以.开头）
 ```
 
-
-
-## 9、type命令 查看内部命令
-
-命令：type
-
-作用：查看一个命令是属于内部命令还是外部命令。
+计算机中的单位：
 
 ```powershell
-用法：type 加命令 
-示例代码：
-#type cd
-含义：查看命令属于内部命令还是外部命令
+# 1TB = 1024GB
+# 1GB = 1024MB
+# 1MB = 1024KB
+# 1KB（千字节） = 1024B（字节）
 ```
 
-<img src="media/type01.jpg" style="width:960px" />
+## 7、pwd命令
 
+主要功能：pwd=print working directory，打印当前工作目录（告诉我们，我们当前位置）
 
+基本语法：
 
-## 10、history命令 查看历史命令
+ ```powershell
+# pwd
+ ```
 
-命令：history
+## 8、cd命令
 
-作用：列出最近输入的一千条命令信息
+主要功能：cd全称change directory，切换目录（从一个目录跳转到另外一个目录）
+
+基本语法：
 
 ```powershell
-用法：输入history回车
-示例代码：
-#history
-含义：列出最近输入的一千条命令信息
+# cd [路径]
+选项说明：
+路径既可以是绝对路径，也可以是相对路径
 ```
 
-<img src="media/history01.jpg" style="width:960px" />
+案例一：切换到/usr/local这个程序目录
 
+```powershell
+# cd /usr/local
+```
 
+案例二：比如我们当前在/home/itheima下，切换到根目录/下
 
-## 11、hostnamectl主机名命令
+```powershell
+# cd /home/itheima
+# cd ../../
+```
 
-Centos6中
+案例三：当我们在某个路径下，如何快速回到自己的家目录
 
-查看主机名：#hostname
+```powershell
+# cd
+或
+# cd ~
+```
 
-临时更改主机名：#hostname 临时主机名
+## 9、clear命令
 
-永久更改主机名：编辑/etc/sysconfig/network文件，在文件中定义永久主机名
+主要功能：清屏
 
+基本语法：
 
+```powershell
+# clear
+```
+
+## 10、reboot命令
+
+主要功能：立即重启计算机
+
+基本语法：
+
+```powershell
+# reboot
+```
+
+## 11、shutdown命令
+
+主要功能：立即关机或延迟关机
+
+立即关机基本语法：
+
+```powershell
+# shutdown -h 0或now
+# shutdown -h 0
+# shutdown -h now
+选项说明：
+-h ：halt缩写，代表关机
+```
+
+> 在Linux系统中，立即关机除了使用shutdown -h 0以外还可以使用halt -p命令
+
+延迟关机基本语法：
+
+```powershell
+# shutdown -h 分钟数
+代表多少分钟后，自动关机
+```
+
+案例1：10分钟后自动关机
+
+```powershell
+# shutdown -h 10
+```
+
+案例2：后悔了，取消关机
+
+```powershell
+光标一直不停的闪，取消关机
+# 按Ctrl + C（CentOS6，中断关机。CentOS7中还需要使用shutdown -c命令）
+# shutdown -c
+```
+
+## 12、type命令
+
+主要功能：主要用来结合help命令，用于判断命令的类型（属于内部命令还是外部命令）
+
+基本语法：
+
+```powershell
+# type 命令
+内部命令：命令 is a shell builtin
+外部命令：没有显示以上信息的就是外部命令
+```
+
+## 13、history命令
+
+主要功能：显示系统以前输入的前1000条命令
+
+基本语法：
+
+```powershell
+# history
+```
+
+## 14、hostnamectl命令
+
+主要功能：用于设置计算机的主机名称（给计算机起个名字），此命令式CentOS7新增的命令。
+
+hostnamectl ： hostname + control
+
+### ☆ 获取计算机的主机名称
+
+```powershell
+# hostname	CentOS6
+# hostnamectl  CentOS7
+```
+
+### ☆ 设置计算机的主机名称
 
 Centos7中主机名分3类，静态的（static）、瞬态的（transient）、和灵活的（pretty）。
 
-​        **静态**主机名也称为内核主机名，是系统在启动时从/etc/hostname内自动初始化的主机名。相当于**永久更改**
-​        **瞬态**主机名是在系统运行时临时分配的主机名，相当于**临时更改**
-​        **灵活**主机名则允许使用特殊字符的主机名，例如"MaYun's Host"
+① 静态static主机名称：电脑关机或重启后，设置的名称亦然有效
 
-​        CentOS 7中和主机名有关的文件为/etc/hostname，它是在系统初始化的时候被读取的，并且内核根据它的内容设置瞬态主机名。
+② 瞬态transient主机名称：临时主机名称，电脑关机或重启后，设置的名称就失效了
 
+③ 灵活pretty主机名称：可以包含一些特殊字符
 
+CentOS 7中和主机名有关的文件为/etc/hostname，它是在系统初始化的时候被读取的，并且内核根据它的内容设置瞬态主机名。
 
-命令：hostnamectl 
+> 更改主机名称，让其永久生效？① 使用静态的 ② 改/etc/hostname文件
 
-作用：操作服务器的主机名（读取、设置）
-
-### 1）查看主机名
+#### ① 瞬态主机名称（临时设置）
 
 ```powershell
-用法：输入hostnamectl回车
-示例代码：
-#hostnamectl
-含义：查看主机名信息
+# hostnamectl --transient set-hostname 主机名称
+主机名称 建议遵循 FQDN协议（功能+公司域名）
+web01.itcast.cn
+web02.itcast.cn
 ```
 
-<img src="media/hostname01.jpg" style="width:960px" />
-
-
-
-
-
-### 2）同时设置静态和瞬时主机名
+案例：临时设置主机名称为yunwei.itcast.cn
 
 ```powershell
-用法：输入hostnamectl set-hostname 主机名
-示例代码：
-#hostnamectl set-hostname heimaserver01.itcast.cn
-含义：设置主机名称为heimaserver01.itcast.cn
-注意：此设置影响静态和瞬态的主机名
+# hostnamectl --transient set-hostname yunwei.itcast.cn
+# su 立即生效
 ```
 
-<img src="media/hostname02.jpg" style="width:960px" />
-
-
-
-### 3）分别配置静态，瞬时，灵活主机名
+#### ② 静态主机名称（永久生效）
 
 ```powershell
-用法：输入hostnamectl --pretty set-hostname 主机名
-示例代码：
-#hostnamectl --pretty set-hostname "yunwei's server01"
-含义：单独设置 灵活 主机名称为 yunwei's server01
-注意：
-主机名需要用引号引起来
-如果试图给静态或者瞬态，设置不规范的主机名称，命令可以执行，但是系统会自动去掉不允许的特殊字符
-如果要单独设置静态或者瞬态主机名，只需要单独使用--static和--transient参数即可
+# hostnamectl --static set-hostname 主机名称
+温馨提示：--static也可以省略不写
 ```
 
-<img src="media/hostname03.jpg" style="width:960px" />
-
-
-
-静态主机名：聂程良服务器
-
-灵活主机名：聂程良的服务器
-
-灵活主机名允许使用"的"这个字
-
-
-
-4）通过配置文件修改主机名
-
-可以修改/etc/hostname来更改静态主机名，后面我们会讲如何编辑文件，这里大家知道就好
-
-
-
-
-
-1.软件卸载重装（重新设置）
-
-2.重装系统
-
-3.冷静自己   ①
-
-4.慢慢看一下是哪里操作失误
-
-5.关机重启(生产环境，不要上来就重启) ②
-
-6.查日志
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 五、扩展：VMware Tools安装(了解)
-
-## 1、什么是VMware Tools
-
-驱动与实用工具的集合
-
-## 2、安装VMware Tools
-
-第一步：找到VMware Tools菜单，如下图所示：
-
-![1553495292441](media/1553495292441.png)
-
-第二步：查看VMware Tools光驱图标是否显示：
-
- ![1553495307991](media/1553495307991.png)
-
-第三步：打开CentOS系统的终端（类似DOS窗口）
-
-![1553495325509](media/1553495325509.png)
-
-> 如果使用普通用户登录操作系统，必须切换到超级管理员root。
->
-> ```powershell
-> $su root
-> ```
->
-> 注：-代表减号
-
-第四步：找到VMware Tools所在路径，一般是在/media目录下：
+案例：把计算机的主机名称永久设置为yunwei.itcast.cn
 
 ```powershell
-#cd /run/media/root/ + Tab键，自动补全
+# hostnamectl --static set-hostname yunwei.itcast.cn
+# su 立即生效
 ```
 
-> 在Linux系统中，如果我们不记得某个命令或者不记得某个路径或名称，不要担心，只需要输入前几个字母 + Tab键，系统会自动帮助我们补全。
-
-第五步：输入ls命令，查看当前目录下有哪些文件
+#### ③ 灵活主机名称（主机名称可以添加特殊字符）
 
 ```powershell
-#ls
+# hostnamectl --pretty set-hostname 主机名称（包含特殊字符）
 ```
 
-![](media\vmwaretools01.jpg)
-
-第六步：使用cp命令，把文件复制到/root目录下（自己的家里）
+案例：把计算机的主机名称通过灵活设置，设置为yunwei's server01
 
 ```powershell
-#cp VM + Tab键 /root/
+# hostnamectl --pretty set-hostname "yunwei's server01"
+查看灵活的主机名称
+# hostnamectl --pretty
 ```
 
-注意:Linux区分大小写，所以这里大写的VM补全，就会自动补全成VMwareTools-10.0.5-3228253.tar.gz
-
-第七步：回到自己的家目录(/root)，使用cd命令
-
-```powershell
-#cd ~
-```
-
-第八步：使用tar命令解压.tar.gz文件
-
-```powershell
-#tar  -xvf   VM+Tab键
-```
-
-第九步：使用cd命令进入vmware-tools-distrib目录
-
-```powershell
-#cd vmware-tools-distrib
-```
-
-第十步：执行安装文件
-
-```powershell
-#./vmware-install.pl
-一路回车
-```
-
-第十一步：执行重启命令
-
-```powershell
-#reboot
-```
-
-
-
-```powershell
-    6  df -T    查看光盘挂载到哪个目录了
-    7  cd /media/VMware\ Tools/   进入到挂载的目录
-    8  ll   查看/media/VMware\ Tools/下有什么文件
-    9  cp VMwareTools-10.3.10-13959562.tar.gz /usr/local/   把文件拷贝到/usr/local
-   10  cd /usr/local/    进入到/usr/local目录
-   11  ll  查看/usr/local/有什么
-   12  tar xvf VMwareTools-10.3.10-13959562.tar.gz    TAR命令解压缩
-   13  ll   查看生产的解压缩目录
-   14  cd vmware-tools-distrib/   进入解压缩目录
-   15  ll    查看vmware-tools-distrib目录里面有什么文件
-   16  ./vmware-install.pl    执行文件vmware-install.pl
-   17  reboot     重启
-   18  history    查看历史命令
-```
