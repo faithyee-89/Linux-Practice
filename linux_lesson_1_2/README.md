@@ -1,5 +1,7 @@
 typora-copy-images-to: ./media
 
+[toc]
+
 # Linux基础命令
 
 # 学习目标
